@@ -1,0 +1,7 @@
+{
+  "name": "calisthenics-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
