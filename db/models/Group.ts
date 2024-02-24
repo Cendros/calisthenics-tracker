@@ -1,11 +1,11 @@
-import { Association, CreationOptional, DataTypes, HasManyAddAssociationMixin, HasManyCountAssociationsMixin, HasManyCreateAssociationMixin, HasManyGetAssociationsMixin, HasManyHasAssociationMixin, HasManyHasAssociationsMixin, HasManyRemoveAssociationMixin, HasManyRemoveAssociationsMixin, HasManySetAssociationsMixin, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
+import { Association, BelongsToManyAddAssociationMixin, BelongsToManyGetAssociationsMixin, CreationOptional, DataTypes, ForeignKey, HasManyAddAssociationMixin, HasManyCountAssociationsMixin, HasManyCreateAssociationMixin, HasManyGetAssociationsMixin, HasManyHasAssociationMixin, HasManyHasAssociationsMixin, HasManyRemoveAssociationMixin, HasManyRemoveAssociationsMixin, HasManySetAssociationsMixin, InferAttributes, InferCreationAttributes, Model, NonAttribute } from 'sequelize';
 import { sequelize } from '../database';
 import { Exercice } from './Exercice';
 
-export class Type extends Model<InferAttributes<Type>, InferCreationAttributes<Type>> {
+export class Group extends Model<InferAttributes<Group>, InferCreationAttributes<Group>> {
     declare id: CreationOptional<number>;
     declare label: string;
-    declare color: string | null;
+    declare quantity: number | null;
 
     declare exercices?: NonAttribute<Exercice[]>;
 
@@ -20,11 +20,11 @@ export class Type extends Model<InferAttributes<Type>, InferCreationAttributes<T
     declare createExercice: HasManyCreateAssociationMixin<Exercice, 'typeId'>;
 
     declare static associations: {
-        exercices: Association<Type, Exercice>;
+        exercices: Association<Group, Exercice>;
     };
 }
 
-Type.init({
+Group.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -33,14 +33,16 @@ Type.init({
     label: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
     },
-    color: DataTypes.STRING(7)
-}, { sequelize, tableName: 'type', timestamps: false });
+    quantity: {
+        type: DataTypes.INTEGER,
+    }
+}, { sequelize, tableName: 'group', timestamps: false });
 
-Type.hasMany(Exercice, {
+Group.hasMany(Exercice, {
     sourceKey: 'id',
-    foreignKey: 'typeId',
+    foreignKey: 'groupId',
     as: 'exercices'
 });
 
